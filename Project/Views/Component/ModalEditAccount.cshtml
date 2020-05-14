@@ -1,0 +1,111 @@
+﻿@{
+    //ViewData["numOfOrder"] = numOfOrder;
+    //ViewData["listAccount"] = listAccount;
+    //ViewData["listProduct"] = listProduct;
+    //ViewData["listCategory"] = listCategory;
+    //ViewData["listSubCategory"] = listSubCategory;
+    //ViewData["listStatusProduct"] = listStatusProduct;
+    //ViewData["listStatusCategory"] = listStatusCategory;
+    //ViewData["listStatusSubCategory"] = listStatusSubCategory;
+
+    List<Project.Models.StatusAccount> listStatusAccount = ViewData["listStatusAccount"] as List<Project.Models.StatusAccount>;
+    List<Project.Models.RoleAccount> listRoleAccount = ViewData["listRoleAccount"] as List<Project.Models.RoleAccount>;
+    Project.Models.Account accountEdit = ViewData["accountEdit"] as Project.Models.Account;
+
+}
+
+<!-- Modal -->
+<div class="modal fade" id="modalEditAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Information of Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="modal-content animate" style="padding: 5px;border-top:none;border-bottom: none" action="~/EditAccountAdmin/EditAccountPost" method="POST">
+
+                    <div class="container">
+                        <label for="username"><b>User Name</b></label><br>
+                        <input class="text" readonly="readonly" type="text" placeholder="Enter User name" name="username" value="@accountEdit.userName" required><br>
+
+                        <label for="displayName"><b>Display Name</b></label><br>
+                        <input class="text" type="text" placeholder="Enter Display name" name="displayName" value="@accountEdit.displayName" required><br>
+
+                        <label for="address"><b>Address</b></label><br>
+                        <input class="text" type="text" placeholder="Enter address" name="address" value="@accountEdit.address"><br>
+
+                        <label for="email"><b>Email</b></label><br>
+                        <input class="text" type="text" placeholder="Enter email" name="email" value="@accountEdit.email" required><br>
+
+                        <label for="phone"><b>Phone</b></label><br>
+                        <input class="text" type="text" placeholder="Enter phone" name="phone" value="@accountEdit.phone" required><br>
+
+                        <div class="form-group">
+                            <label for="status"><b>Status</b></label>
+                            <select name="status" class="form-control" id="exampleFormControlSelect1">
+                                @foreach (Project.Models.StatusAccount statusAccount in listStatusAccount)
+                                {
+                                    if (statusAccount.code == accountEdit.status)
+                                    {
+                                        <option selected value="@statusAccount.code">@statusAccount.status</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@statusAccount.code">@statusAccount.status</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="role"><b>Role</b></label>
+                            <select name="role" class="form-control" id="exampleFormControlSelect12">
+                                @foreach (Project.Models.RoleAccount roleAccount in listRoleAccount)
+                                {
+                                    if (roleAccount.code == accountEdit.roleId)
+                                    {
+                                        <option selected value="@roleAccount.code">@roleAccount.role</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@roleAccount.code">@roleAccount.role</option>
+                                    }
+
+                                }
+                            </select>
+                        </div>
+
+                        <button class="btn btn-outline-info" style="width: 55%" type="submit"><i class="fas fa-sync-alt mr-2"></i>Update</button>
+                        <a data-dismiss="modal" class="btn btn-outline-danger" style="width: 44%"><i class="fas fa-trash mr-2"></i>Cancel</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function validateSelectBox(obj,des) {
+        // Lấy danh sách các options
+        var options = obj.children;
+
+        // Biến lưu trữ các chuyên mục đa chọn
+        var html = '';
+        // lặp qua từng option và kiểm tra thuộc tính selected
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].selected) {
+                html = options[i].value;
+                break;
+            }
+        }
+
+        // Gán kết quả vào div#result
+        document.getElementById(des).innerHTML = html;
+    }
+</script>

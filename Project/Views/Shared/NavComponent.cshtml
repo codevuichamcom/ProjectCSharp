@@ -1,0 +1,164 @@
+﻿@{
+    List<Project.Models.Category> listCategory = ViewData["listCategory"] as List<Project.Models.Category>;
+    Project.Models.Account account = Session["account"] as Project.Models.Account;
+    List<Project.Models.Cart> listCart = Session["listCart"] as List<Project.Models.Cart>;
+}
+<style>
+
+    .btn-group:hover > .dropdown-menu {
+        display: block;
+    }
+
+    .btn-group {
+        margin: auto;
+    }
+
+    #login {
+        border-top-right-radius: .25rem !important;
+        border-bottom-right-radius: .25rem !important;
+    }
+
+    .btn-outline-warning {
+        color: white;
+        border-color: none;
+    }
+
+        .btn-outline-warning:hover {
+            color: white;
+            background-color: #00ACE9;
+        }
+</style>
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style="height: 4rem; opacity: .9; background-color: #404040 !important">
+    <a class="navbar-brand" href="https://localhost:44394/home/Index">HouseWareShop</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <div class="navigationDesktop ml-5">
+            <nav class="nav">
+                <ul>
+                    <li>
+                        <a class="link btn btn-outline-warning" style="background-color:  #404040; border-color: #404040 !important;color: white;margin-top: -2px;" href="https://localhost:44394/Product/listProduct">Products</a>
+                        <ul>
+                            @foreach (Project.Models.Category C in listCategory)
+                            {
+                                <li class="sublink">
+                                    <a class="link" href="https://localhost:44394/Filter/filterByCategory?id=@C.id">
+                                        @C.category
+                                        <ul>
+                                            @foreach (Project.Models.SubCategory subC in C.listSubCategory)
+                                            {
+                                                <li class="sublink">
+                                                    <a class="link" href="https://localhost:44394/Filter/filterByCategory?cid=@C.id">
+                                                        @subC.subCategoryName
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="btn btn-outline-warning ml-5" style="border-color: #404040 !important;font-size: 13pt" href="~/GetAllProductSalling">Sale Items</i></a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-warning ml-5" style="border-color: #404040 !important;font-size: 13pt" href="https://www.facebook.com/xb.jamesgosling/about?section=overview&lst=100013406340780%3A100013406340780%3A1572076900">Contact Us</i></a>
+            </li>
+        </ul>
+
+        <form target="_self" id="frm" action="https://localhost:44394/search/search" method="get" onchange="submitForm()">
+            <div class="search-box">
+                <input class="search-txt" name="inputSearch" type="text" placeholder="Type to search">
+                <input type="hidden" value="${page}" name="page">
+                <a href="#" class="search-btn">
+                    <i class="fas fa-search text-center" style="margin-top:12px;color: white"></i>
+                </a>
+            </div>
+        </form>
+        <ul class="navbar-nav ml-auto mr-2">
+
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle mr-5" href="#" id="navbarDropdown" style="color: green; font-size: 2.5rem" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-cart-plus mr-2" style="color: #e9ecef; font-size: 2.5rem"></i>
+                    @if (listCart != null && listCart.Count>0)
+                    {
+                    <sup style="color: #fcae00 !important">@listCart.Count</sup>
+                    }
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    @if (listCart == null)
+                    {
+                    <span class="mx-3">List Cart is empty</span>
+                    }
+                    else
+                    {
+                    <div class="popup-list-cart">
+                        <table>
+                            @foreach (Project.Models.Cart cart in listCart)
+                            {
+                            <tr>
+                                <td class="px-2"><img src="~/images/@cart.productImg"></td>
+                                <td class="f-small"><a href="~/ProductDetail/detail?id=@cart.productId">@cart.productName</a></td>
+                                <td class="px-3 f-small">x @cart.quantity</td>
+                            </tr>
+                            }
+                        </table>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="~/GetListCart/Cart">View List Cart</a>
+                    }
+                </div>
+            </li>
+
+            <!-- Example single danger button -->
+            <div class="btn-group" onmouseover="hoverMe();">
+                @if (account == null)
+                {
+                    <a id="login" class="nav-link btn btn-outline-primary ml-2 mr-1" style="margin: auto" href="https://localhost:44394/Login/Login">
+                        Login
+                        <i class="fas fa-user-plus ml-2"></i>
+                    </a>
+                }
+                else
+                {
+                    <a class="nav-link btn btn-outline-primary mt-2 ml-2" href="#">
+                        @account.displayName
+                        <i class="fas fa-user-plus ml-2"></i>
+                    </a>
+
+                    <div class="dropdown-menu" id="dropdowm">
+                        <a class="dropdown-item" href="~/MyProfile/MyProfile">My profile</a>
+                        <a class="dropdown-item" href="~/MyProfile/MyProfile" onclick="openOrder()">Orders</a>
+                        <a class="dropdown-item" href="#">History</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="https://localhost:44394/Logout/Logout">Logout</a>
+                    </div>
+                }
+            </div>
+        </ul>
+    </div>
+</nav>
+<script>
+    function submitForm() {
+        document.getElementById("frm").submit();
+    }
+
+    function hoverMe() {
+        if (@account!= null) {
+            var dropdowm = document.getElementById("dropdowm");
+            dropdowm.style.display = "block";
+        }
+    }
+
+</script>

@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    Project.Models.Product product = ViewData["product"] as Project.Models.Product;
+    List<Project.Models.Image> listImage = ViewData["listImage"] as List<Project.Models.Image>;
+    int track = 0;
+    string status = "Selling";
+}
+<div class="container" style="margin-top: 5rem">
+    <div class="row mt-5">
+        <div class="col-md-5 mt-5">
+                @for(int i=0;i<listImage.Count;i++)
+                {
+                    <div class="mySlides">
+                        <div class="numbertext">@(i+1) / @listImage.Count</div>
+                        <img src="~/images/@listImage[i].imageName" class="w-100">
+                    </div>
+                }
+
+                <!-- Next and previous buttons -->
+                <a class="prevs" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="nexts" onclick="plusSlides(1)">&#10095;</a>
+
+                <!-- Thumbnail images -->
+                <div class="row-image">
+
+                    @for(int i = 0; i < listImage.Count; i++)
+                    {
+                        <div class="column">
+                            <img class="demo cursor w-100" src="~/images/@listImage[i].imageName" onclick="currentSlide(@i)">
+                        </div>
+                     }
+                </div>
+        </div>
+
+        <div class="col-md-6 pl-5">
+            <h3 class="mt-5">
+                @product.name
+                @if (product.status != 1)
+                {
+                    switch (product.status)
+                    {
+                        case 2:
+                            status = "Sale";
+                            break;
+                        case 3:
+                            status = "freeShip";
+                            break;
+                        case 4:
+                            status = "Out of Stock";
+                            break;
+                        case 5:
+                            status = "Stop bussiness";
+                            break;
+                    }
+                    <sup>
+                        <span class="badge badge-success">
+                            @status
+                        </span>
+                    </sup>
+                }
+            </h3>
+            <p class="my-0"><b style="font-size: 25px;color: #f60">$ @product.price</b>@if(product.status == 2){<span class="ml-3" style="font-size: 20px; color: rgb(153, 153, 153)"><strike>$ @(Math.Round(product.price*(1+product.sale)*100)/100)</strike></span>}</p>
+            <hr />
+            <h6 class="mt-5"><b>Code of Product:  @product.code</b></h6>
+            <hr />
+            <p class="mt-4"><b>Infomation of Product:</b></br></br>@product.description</p>
+            <hr />
+            <a href="~/AddToCart?id=@product.id" class="btn btn-outline-danger w-50 mt-4"><i class="fas fa-cart-plus mr-2"></i>Add to Cart</a>
+            <a href="~/CheckOut/checkout" class="btn btn-outline-success w-25 mt-4 ml-2">Buy Now<i class="fas fa-money-check-alt ml-2" style="color: green"></i></a>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/gallery.js"></script>

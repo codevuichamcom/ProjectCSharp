@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "listProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    int page = (int)ViewData["page"];
+    List<Project.Models.Product> listProduct = ViewData["listProduct"] as List<Project.Models.Product>;
+    List<Project.Models.Category> listCategory = ViewData["listCategory"] as List<Project.Models.Category>;
+}
+
+<div class="container">
+    <div class="row">
+        <!-- Show list category -->
+        <div class="col-md-2">
+            <h5 class="labelhead">
+                <div class="alert alert-success" role="alert">
+                    Category
+                </div>
+            </h5>
+            <div class="category">
+                <a href="https://localhost:44394/Filter/filterByCategory?id=0&page=@page" class="pt-3" style="color: #d71e1e; font-size: 20px">All Product</a>
+                @foreach (Project.Models.Category category in listCategory)
+                {
+                    <a class="pt-4" href="https://localhost:44394/Filter/filterByCategory?id=@category.id&page=@page" style="color: #8400e7 !important; margin-left: 5px;font-size: 20px">@category.category</a>
+                    foreach (Project.Models.SubCategory subCategory in category.listSubCategory)
+                    {
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="@subCategory.subCategoryName">
+                            <a class="pl-3 subCategory" href="https://localhost:44394/Filter/filterByCategory?cid=@subCategory.id&page=@page"><li>@subCategory.subCategoryName</li></a>
+                        </span>
+                    }
+                }
+            </div>
+        </div>
+        <!-- end -->
+        <!-- Show list product -->
+
+        <div class="col-md-10">
+            <h5 class="labelhead">
+                <div class="alert alert-secondary" role="alert">
+                    <form onchange="submitForm()" id="combo" action="sort-product" method="post">
+                        List of products
+                        <i class="fas fa-cubes mr-2 ml-4"></i></i><a href="sort-product?match=1" class="btn btn-outline-warning" style="color: #ff0707"> Best Match</a>
+                        <i class="fas fa-filter mr-2 ml-4"></i></i><a href="sort-product?random=1" class="btn btn-outline-primary">Random</a>
+                        <i class="fas fa-dollar-sign mr-2 ml-4"></i>
+                        <select name="price" style="font-size: 1rem">
+                            <option value="-1">Price</option>
+                            <option>0$-5%</option>
+                            <option>5$-10$</option>
+                            <option>10$-15$</option>
+                            <option>15$-20$</option>
+                            <option>20$</option>
+                        </select>
+                        <i class="fas fa-sort-down mr-2 ml-4"></i><a href="sort-product?news=1" class="btn btn-outline-info">new</a>
+                        <i class="fas fa-bolt mr-2 ml-4"></i><a href="sort-product?free=1" class="btn btn-outline-success">free ship</a>
+                        <a href="sort-product?name=1" style="color: orange"><i class="fas fa-sort ml-5"></i></a>
+                    </form>
+                </div>
+                @RenderPage("NavPagingComponent.cshtml")
+                <div class="row mb-5">
+
+                    @if (listProduct.Count == 0)
+                    {
+                        <div class="col-md-12 pt-5">
+                            <h5>No products found</h5>
+                        </div>
+                    }
+                    else
+                    {
+
+                        foreach (Project.Models.Product product in listProduct)
+                        {
+                            <!-- Show product -->
+
+                            <div class="col-md-3 mt-4 pt-2">
+                                <div class="card">
+                                    @if (product.status == 2)
+                                    {
+                                        <div id="DIV_1">
+                                            <span id="SPAN_2">@Math.Round(product.sale * 100)</span>
+                                        </div>
+                                    }
+                                    @if (product.status == 3)
+                                    {
+                                        <div id="DIV_1">
+                                            <span id="SPAN_2"><i class="fas fa-bolt"></i></span>
+                                        </div>
+                                    }
+                                    <a href="~/ProductDetail/detail?id=@product.id"><img src="~/images/@product.image" style="border: 1px solid #ededed;" class="card-img-top pt-4" alt="..."></a>
+                                    <div class="card-body pt-3">
+                                        <a href="~/AddToCart?id=@product.id" class="btn btn-outline-danger"><i class="fas fa-cart-plus mr-2"></i>Add to cart</a>
+                                        <a href="~/ProductDetail/detail?id=@product.id" class="card-title text-center mb-1 mt-2">@product.name</a>
+                                        <p class="text-center my-0" style="color: #f60">$@product.price</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- end -->
+                            }
+
+                            }
+                        </div>
+                        @RenderPage("NavPagingComponent.cshtml")
+                </div>
+                <!--end -->
+            </div>
+        </div>
+
+        <script>
+            function submitForm() {
+                document.getElementById("combo").submit();
+            }
+        </script>

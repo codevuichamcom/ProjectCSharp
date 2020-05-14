@@ -1,0 +1,8 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{ 
+    Project.DAL.ViewDao viewDao = new Project.DAL.ViewDao();
+    int view = viewDao.getView();
+    viewDao.updateView(++view);
+}

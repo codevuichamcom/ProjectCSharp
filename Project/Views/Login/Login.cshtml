@@ -1,0 +1,39 @@
+﻿
+@{
+    Layout = null;
+}
+
+@{
+    string warning = ViewData["warning"].ToString();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+
+    <link href="~/css/login.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="loginbox">
+        <img src="~/images/avatar.png" class="avatar">
+        <h1>Login Here</h1>
+        <form action="LoginPost" method="POST">
+            <p>Username</p>
+            <input class="text" required type="text" name="username" placeholder="Enter Username">
+            <p>Password</p>
+            <input class="text" required type="password" name="password" placeholder="Enter Password">
+            <input type="checkbox" name="remmember" />remeber password
+            <input class="text" type="submit" name="" value="Login" style="margin-top: 1rem">
+            <a href="~/ForgotPassword/ForgotPassword">Lost your password?</a><br>
+            <a href="~/Register/signUp">Don't have an account?</a><br />
+            <span style="color: #fff707" class="mt-2"><i class="fas fa-exclamation-triangle"></i> @warning</span>
+        </form>
+
+    </div>
+
+</body>
+</html>

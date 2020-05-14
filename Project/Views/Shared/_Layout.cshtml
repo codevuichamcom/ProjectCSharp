@@ -1,0 +1,44 @@
+﻿@{ 
+    Project.Models.Account account = Session["account"] as Project.Models.Account;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="~/css/newcss.css" rel="stylesheet" type="text/css" />
+    <title>HouseWareShop</title>
+    <style>
+        .card-body p {
+            max-height: 43px;
+            overflow: hidden;
+            color: rgb(51, 51, 51);
+            font-size: 13px;
+        }
+
+        .card-title:hover {
+            color: blue !important;
+        }
+
+        .card-text:hover {
+            color: gray !important;
+        }
+
+    </style>
+
+</head>
+<body>
+    @RenderPage("NavComponent.cshtml")
+
+    @RenderBody()
+
+    @RenderPage("footerComponent.cshtml")
+
+</body>
+</html>
